@@ -116,7 +116,7 @@ pkg_tar(
 )
 
 language_tool_layer(
-    name = "java10-ltl",
+    name = "java11-ltl",
     base = "@ubuntu1404//image",
     tars = [
         ":open_jdk_tar",
@@ -130,9 +130,7 @@ genrule(
     srcs = ["tests.yaml.tpl"],
     outs = ["tests.yaml"],
     cmd = (
-        # JDK version 10 includes a '+' sign.
-        # TODO: remove for future versions of Java that do not need it
-        "sed 's|{_JAVA_REVISION_ENCODED}|" + OPENJDK_INSTALLER.revision.replace("+", "%2B") + "|g; s|{_JAVA_REVISION}|" + OPENJDK_INSTALLER.revision + "|g' <$< >$@"
+        "sed 's|{_JAVA_REVISION}|" + OPENJDK_INSTALLER.revision + "|g' <$< >$@"
     ),
 )
 
@@ -142,7 +140,7 @@ toolchain_container(
     base = "@ubuntu1604//image",
     language_layers = [
         ":java-ltl",
-        ":java10-ltl",
+        ":java11-ltl",
     ],
 )
 
